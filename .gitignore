@@ -32,3 +32,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
+node_modules/
+__pycache__/
+*.pyc
+sample/graph.json
+viewer/registry.json
+viewer/sample/

@@ -1,0 +1,58 @@
+name: Index and Deploy Viewer
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install networkx
+
+      - name: Run Indexer on Sample Project
+        run: |
+          # Run the indexer on the sample application
+          # This will output viewer/registry.json and sample/graph.json
+          python -m indexer.main --path ./sample --name "Sample Test Application" --language python --registry ./viewer/registry.json
+
+      - name: Prepare Viewer Deployment Folder
+        run: |
+          # We need to make sure the viewer directory has access to the sample directory's graph.json
+          # We'll copy the sample directory into the viewer directory to keep static paths simple.
+          cp -r sample viewer/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './viewer'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

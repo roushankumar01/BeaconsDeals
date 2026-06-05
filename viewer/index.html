@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Mapping Viewer</title>
+    <!-- Cytoscape core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+    <!-- Dagre layout for hierarchical views -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        #controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        select, button {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        #cy {
+            flex-grow: 1;
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid #ccc;
+        }
+        #legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>Code Mapping Viewer</h2>
+    <div id="controls">
+        <label for="project-select">Select Project:</label>
+        <select id="project-select">
+            <option value="">-- Loading --</option>
+        </select>
+        <button id="reset-layout">Reset Layout</button>
+    </div>
+</header>
+
+<div id="cy"></div>
+
+<div id="legend">
+    <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div> File</div>
+    <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div> Class</div>
+    <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div> Method / Function</div>
+    <hr>
+    <div class="legend-item"><div class="legend-color" style="height: 2px; width: 16px; background: #95a5a6; margin-top:7px;"></div> Contains</div>
+    <div class="legend-item"><div class="legend-color" style="height: 2px; width: 16px; background: #f39c12; margin-top:7px;"></div> Imports</div>
+    <div class="legend-item"><div class="legend-color" style="height: 2px; width: 16px; background: #9b59b6; margin-top:7px;"></div> Inherits</div>
+    <div class="legend-item"><div class="legend-color" style="height: 2px; width: 16px; background: #e67e22; margin-top:7px;"></div> Calls</div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
